@@ -1,0 +1,30 @@
+/* Hand Styles */
+.hand {
+    display: flex;
+    justify-content: center;
+    position: relative;
+    height: 180px;
+    align-items: center;
+    perspective: 1000px;
+}
+
+.hand-card-wrapper {
+    transition: all 0.3s ease-out;
+    position: relative;
+    transform-origin: bottom center;
+}
+
+.hand-card-wrapper:hover {
+    z-index: 100 !important;
+    transform: translateY(-30px) !important;
+}
+
+.opponent-hand .hand-card-wrapper {
+    /* Tighter squeeze for opponents */
+    /* Handled by inline spacing in TSX */
+}
+
+/* Hover effects only for player hand */
+.player-hand .hand-card-wrapper:hover {
+    /* Scale up slightly? */
+}

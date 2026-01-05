@@ -1,0 +1,128 @@
+.card {
+  width: 100px;
+  height: 150px;
+  border-radius: 12px;
+  background-color: #fff;
+  position: relative;
+  box-shadow: 2px 2px 10px rgba(0, 0, 0, 0.2);
+  user-select: none;
+  cursor: default;
+  transition: transform 0.2s, box-shadow 0.2s;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-family: 'Outfit', sans-serif;
+  overflow: hidden;
+  border: 2px solid white;
+}
+
+.card:hover {
+    z-index: 10;
+}
+
+.card.playable {
+  cursor: pointer;
+  box-shadow: 0 0 15px rgba(255, 255, 255, 0.8);
+  transform: translateY(-20px);
+}
+
+/* Colors */
+.card.red { background: linear-gradient(135deg, #ff5555, #cc0000); color: white; }
+.card.blue { background: linear-gradient(135deg, #4488ff, #0044cc); color: white; }
+.card.green { background: linear-gradient(135deg, #55aa55, #008800); color: white; }
+.card.yellow { background: linear-gradient(135deg, #ffdd00, #ffaa00); color: black; text-shadow: none; }
+.card.black { background: linear-gradient(135deg, #333, #000); color: white; }
+
+/* Card Back */
+.card.back {
+  background: linear-gradient(45deg, #111, #333);
+  border: 2px solid #555;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.card-oval {
+  width: 80%;
+  height: 60%;
+  border-radius: 50%;
+  background: #ff5555;
+  transform: rotate(-45deg);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  box-shadow: inset 0 0 10px rgba(0,0,0,0.5);
+}
+
+.uno-text {
+  font-size: 1.5rem;
+  font-weight: 900;
+  color: #ffdd00;
+  transform: rotate(45deg);
+  text-shadow: 2px 2px 0 #000;
+}
+
+/* Content Layout */
+.card-inner {
+  width: 100%;
+  height: 100%;
+  position: relative;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.center-wrapper {
+  background: white;
+  width: 70px;
+  height: 100px;
+  border-radius: 50% 20% 50% 20%; /* Abstract oval */
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  box-shadow: inset 2px 2px 5px rgba(0,0,0,0.2);
+}
+
+.card.black .center-wrapper {
+    background: linear-gradient(135deg, #ff5555, #5555ff, #55ff55, #ffaa00);
+}
+
+.large {
+  font-size: 3rem;
+  font-weight: 700;
+  color: inherit;
+  /* Text-shadow trick to simulate color text inside white background */
+  /* Actually for number cards, the text should be the color of the card. */
+}
+
+.card.red .large { color: #cc0000; }
+.card.blue .large { color: #0044cc; }
+.card.green .large { color: #008800; }
+.card.yellow .large { color: #ffaa00; }
+
+.corner {
+  position: absolute;
+  font-size: 1rem;
+  font-weight: bold;
+}
+
+.top-left {
+  top: 5px;
+  left: 5px;
+}
+
+.bottom-right {
+  bottom: 5px;
+  right: 5px;
+  transform: rotate(180deg);
+}
+
+.card-icon {
+    font-size: 2rem;
+}
+
+/* Animations */
+@keyframes drawCard {
+    from { transform: translate(0, -200px) scale(0.5); opacity: 0; }
+    to { transform: translate(0, 0) scale(1); opacity: 1; }
+}

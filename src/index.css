@@ -1,0 +1,37 @@
+@import url('https://fonts.googleapis.com/css2?family=Outfit:wght@300;500;700;900&display=swap');
+
+:root {
+  --color-red: #ff5555;
+  --color-blue: #5555ff;
+  --color-green: #55ff55;
+  --color-yellow: #ffaa00;
+  --color-dark: #1a1a1a;
+}
+
+* {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+body {
+  font-family: 'Outfit', sans-serif;
+  background-color: var(--color-dark);
+  color: white;
+  overflow: hidden;
+  /* Prevent scroll on full screen game */
+}
+
+/* Scrollbar styling if needed */
+::-webkit-scrollbar {
+  width: 8px;
+}
+
+::-webkit-scrollbar-track {
+  background: #222;
+}
+
+::-webkit-scrollbar-thumb {
+  background: #555;
+  border-radius: 4px;
+}

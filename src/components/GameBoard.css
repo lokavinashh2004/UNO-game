@@ -1,0 +1,175 @@
+.game-board {
+    display: grid;
+    grid-template-rows: 150px 1fr 200px;
+    grid-template-columns: 150px 1fr 150px;
+    height: 100vh;
+    width: 100vw;
+    background: radial-gradient(circle at center, #2b3a42, #1a1a1a);
+    overflow: hidden;
+    font-family: 'Outfit', sans-serif;
+    color: white;
+}
+
+.position-top {
+    grid-column: 2;
+    grid-row: 1;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: flex-start;
+    padding-top: 10px;
+}
+
+.position-bottom {
+    grid-column: 1 / span 3;
+    grid-row: 3;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: flex-end;
+    padding-bottom: 20px;
+    z-index: 100;
+}
+
+.position-left {
+    grid-column: 1;
+    grid-row: 2;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    transform: rotate(90deg);
+}
+
+.position-right {
+    grid-column: 3;
+    grid-row: 2;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    transform: rotate(-90deg);
+}
+
+.center-area {
+    grid-column: 2;
+    grid-row: 2;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    gap: 20px;
+}
+
+.deck-area {
+    display: flex;
+    gap: 40px;
+}
+
+.game-info {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 10px;
+    background: rgba(0, 0, 0, 0.5);
+    padding: 15px;
+    border-radius: 12px;
+    backdrop-filter: blur(5px);
+}
+
+.color-indicator {
+    width: 30px;
+    height: 30px;
+    border-radius: 50%;
+    border: 2px solid white;
+    box-shadow: 0 0 10px rgba(255, 255, 255, 0.5);
+}
+
+.color-indicator.red {
+    background: #ff5555;
+}
+
+.color-indicator.blue {
+    background: #5555ff;
+}
+
+.color-indicator.green {
+    background: #55ff55;
+}
+
+.color-indicator.yellow {
+    background: #ffaa00;
+}
+
+.player-avatar {
+    background: rgba(255, 255, 255, 0.1);
+    padding: 5px 15px;
+    border-radius: 20px;
+    margin-bottom: 5px;
+    font-weight: bold;
+    border: 2px solid transparent;
+    transition: all 0.3s;
+}
+
+.player-avatar.active {
+    border-color: #ffdd00;
+    box-shadow: 0 0 10px #ffdd00;
+    background: rgba(255, 221, 0, 0.2);
+}
+
+.uno-btn {
+    background: linear-gradient(45deg, #ff5555, #ffaa00);
+    border: none;
+    padding: 10px 20px;
+    border-radius: 20px;
+    color: white;
+    font-weight: 900;
+    cursor: pointer;
+    transform: scale(0.9);
+    transition: transform 0.2s;
+}
+
+.uno-btn:hover {
+    transform: scale(1.1);
+}
+
+.menu-screen {
+    height: 100vh;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    background: #1a1a1a;
+    color: white;
+    font-family: 'Outfit', sans-serif;
+}
+
+.menu-screen h1 {
+    font-size: 5rem;
+    margin-bottom: 2rem;
+    background: linear-gradient(45deg, #ff5555, #ffaa00, #55aa55, #5555ff);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+}
+
+.btn-start {
+    padding: 15px 40px;
+    font-size: 1.5rem;
+    border-radius: 30px;
+    border: none;
+    background: white;
+    color: black;
+    font-weight: bold;
+    cursor: pointer;
+    transition: transform 0.2s;
+}
+
+.btn-start:hover {
+    transform: scale(1.05);
+}
+
+/* Opponent hand adjustments to prevent overflow */
+.position-left .hand,
+.position-right .hand {
+    /* Since rotated, width becomes height */
+}
