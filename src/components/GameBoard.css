@@ -58,12 +58,14 @@
     flex-direction: column;
     align-items: center;
     justify-content: center;
-    gap: 20px;
+    position: relative; /* Enable absolute positioning for children */
 }
 
 .deck-area {
     display: flex;
     gap: 40px;
+    /* Ensure deck stays central */
+    z-index: 10;
 }
 
 .game-info {
@@ -71,10 +73,18 @@
     flex-direction: column;
     align-items: center;
     gap: 10px;
-    background: rgba(0, 0, 0, 0.5);
     padding: 15px;
     border-radius: 12px;
-    backdrop-filter: blur(5px);
+    /* Move info below the deck without pushing the deck up */
+    position: absolute;
+    top: 60%; /* Push down */
+    transform: translateY(60px); 
+    background: transparent; /* Cleaner look, or keep transparent background */
+    pointer-events: none; /* Let clicks pass through if needed, though buttons need events */
+}
+
+.game-info > * {
+    pointer-events: auto; /* Re-enable pointer events for buttons */
 }
 
 .color-indicator {

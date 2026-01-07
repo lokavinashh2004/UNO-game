@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
 import { useGame } from '../contexts/GameContext';
+import { useAnimation } from '../contexts/AnimationContext';
 import Hand from './Hand';
 import Card from './Card';
 import ColorPicker from './UI/ColorPicker';
@@ -10,6 +11,47 @@ import './GameBoard.css';
 const GameBoard: React.FC = () => {
     const { state, dispatch } = useGame();
     const [pendingWildCardId, setPendingWildCardId] = useState<string | null>(null);
+    const [isDealing, setIsDealing] = useState(false);
+    const dealAnimationPlayed = React.useRef(false); // Ref to track if animation played
+
+    const { triggerAnimation, isAnimating } = useAnimation(); // Hook for animations
+
+    React.useEffect(() => {
+        const playDealAnimation = async () => {
+            if (state.status === 'playing' && !dealAnimationPlayed.current) {
+                dealAnimationPlayed.current = true;
+                setIsDealing(true);
+
+                // Target selectors for all players (assuming standard 4 player layout or dynamic)
+                // We fly 7 cards to each player.
+                // Batch per player
+                const animations = [];
+
+                // Human (Bottom)
+                animations.push(triggerAnimation('draw', { count: 7, targetSelector: '.position-bottom .player-avatar' }));
+
+                // Left
+                if (state.players.length > 1) {
+                    animations.push(triggerAnimation('draw', { count: 7, targetSelector: '.position-left .player-avatar' }));
+                }
+
+                // Top
+                if (state.players.length > 2) {
+                    animations.push(triggerAnimation('draw', { count: 7, targetSelector: '.position-top .player-avatar' }));
+                }
+
+                // Right
+                if (state.players.length > 3) {
+                    animations.push(triggerAnimation('draw', { count: 7, targetSelector: '.position-right .player-avatar' }));
+                }
+
+                await Promise.all(animations);
+                setIsDealing(false);
+            }
+        };
+
+        playDealAnimation();
+    }, [state.status, state.players.length, triggerAnimation]);
 
     // Initialize AI hook
     useAI();
@@ -54,8 +96,15 @@ const GameBoard: React.FC = () => {
         });
     }
 
-    const handleDraw = () => {
-        if (state.currentPlayerIndex === 0 && !state.drawnCard) {
+    const handleDraw = async () => {
+        if (state.currentPlayerIndex === 0 && !state.drawnCard && !isAnimating) {
+            // 1. Trigger Visuals
+            await triggerAnimation('draw', {
+                count: 1,
+                targetSelector: '.position-bottom .player-avatar' // Target Human
+            });
+
+            // 2. Dispatch Game Logic
             dispatch({ type: 'DRAW_CARD', payload: { playerId: humanPlayer.id } });
         }
     };
@@ -99,7 +148,7 @@ const GameBoard: React.FC = () => {
                             {topPlayer.name} ({topPlayer.hand.length})
                             {topPlayer.isUno && <span className="uno-badge">UNO!</span>}
                         </div>
-                        <Hand cards={topPlayer.hand} isCurrentPlayer={false} />
+                        <Hand cards={isDealing ? [] : topPlayer.hand} isCurrentPlayer={false} />
                     </>
                 )}
                 {state.players.length === 2 && (
@@ -107,7 +156,7 @@ const GameBoard: React.FC = () => {
                         <div className={`player-avatar ${state.currentPlayerIndex === 1 ? 'active' : ''}`}>
                             {state.players[1].name} ({state.players[1].hand.length})
                         </div>
-                        <Hand cards={state.players[1].hand} isCurrentPlayer={false} />
+                        <Hand cards={isDealing ? [] : state.players[1].hand} isCurrentPlayer={false} />
                     </>
                 )}
             </div>
@@ -120,7 +169,7 @@ const GameBoard: React.FC = () => {
                             {leftPlayer.name} ({leftPlayer.hand.length})
                             {leftPlayer.isUno && <span className="uno-badge">UNO!</span>}
                         </div>
-                        <Hand cards={leftPlayer.hand} isCurrentPlayer={false} />
+                        <Hand cards={isDealing ? [] : leftPlayer.hand} isCurrentPlayer={false} />
                     </>
                 )}
             </div>
@@ -160,7 +209,7 @@ const GameBoard: React.FC = () => {
                             {rightPlayer.name} ({rightPlayer.hand.length})
                             {rightPlayer.isUno && <span className="uno-badge">UNO!</span>}
                         </div>
-                        <Hand cards={rightPlayer.hand} isCurrentPlayer={false} />
+                        <Hand cards={isDealing ? [] : rightPlayer.hand} isCurrentPlayer={false} />
                     </>
                 )}
             </div>
@@ -171,7 +220,7 @@ const GameBoard: React.FC = () => {
                     You {humanPlayer.isUno && <span className="uno-badge">UNO!</span>}
                 </div>
                 <Hand
-                    cards={humanPlayer.hand}
+                    cards={isDealing ? [] : humanPlayer.hand}
                     isCurrentPlayer={true}
                     playableCards={state.currentPlayerIndex === 0 ? playableCards : undefined}
                     onPlayCard={handlePlay}

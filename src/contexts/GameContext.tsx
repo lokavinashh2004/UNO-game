@@ -201,13 +201,39 @@ const gameReducer = (state: GameState, action: GameAction): GameState => {
     }
 };
 
-export const GameProvider: React.FC<{ children: React.ReactNode }> = ({ children }) => {
-    const [state, dispatch] = useReducer(gameReducer, initialState);
+export const GameProvider: React.FC<{ children: React.ReactNode; initialMultiplayerState?: any }> = ({ children, initialMultiplayerState }) => {
+    // If we have a multiplayer state, convert it to our local format
+    const computedInitialState = initialMultiplayerState
+        ? convertMultiplayerState(initialMultiplayerState)
+        : initialState;
+
+    const [state, dispatch] = useReducer(gameReducer, computedInitialState);
     return (
         <GameContext.Provider value={{ state, dispatch }}>
             {children}
         </GameContext.Provider>
     );
+};
+
+// Helper to convert multiplayer GameState to local GameState format
+const convertMultiplayerState = (mpState: any): GameState => {
+    return {
+        deck: mpState.drawPile || [],
+        discardPile: mpState.discardPile || [],
+        players: mpState.players.map((p: any) => ({
+            id: p.id,
+            name: p.name,
+            hand: p.hand,
+            isAI: false,
+            isUno: p.hasCalledUno,
+        })),
+        currentPlayerIndex: mpState.currentPlayerIndex,
+        direction: mpState.playDirection === 'clockwise' ? 1 : -1,
+        currentColor: mpState.currentColor as CardColor,
+        status: mpState.gamePhase === 'game_over' ? 'game-over' : 'playing',
+        winner: mpState.winnerId ? mpState.players.find((p: any) => p.id === mpState.winnerId) : null,
+        drawnCard: mpState.drawnCard,
+    };
 };
 
 export const useGame = () => {
