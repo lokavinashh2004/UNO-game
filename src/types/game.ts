@@ -30,6 +30,7 @@ export interface GameState {
   status: GameStatus;
   winner: Player | null;
   drawnCard: Card | null; // The card just drawn by player
+  pendingDrawCount?: number; // For stacking draw cards
 }
 
 export type GameAction =

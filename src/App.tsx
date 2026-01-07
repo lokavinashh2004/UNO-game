@@ -1,4 +1,4 @@
-import { BrowserRouter, Routes, Route, useParams } from 'react-router-dom';
+import { BrowserRouter, Routes, Route } from 'react-router-dom';
 import { GameProvider } from './contexts/GameContext';
 import { AnimationProvider } from './contexts/AnimationContext';
 import { SocketProvider, useSocket } from './contexts/SocketContext';
@@ -8,13 +8,8 @@ import AnimationOverlay from './components/Effects/AnimationOverlay';
 import './bg.css';
 
 // Component to handle joining from URL
+// The :code param is extracted by Lobby component from the URL
 const RoomJoinHandler: React.FC = () => {
-  // The code parameter would be used by Lobby to auto-populate the join form
-  const _params = useParams<{ code: string }>();
-
-  // If already in this room, no action needed
-  // The Lobby component will handle the UI
-
   return <Lobby />;
 };
 
