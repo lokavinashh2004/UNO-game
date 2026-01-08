@@ -66,7 +66,7 @@ export const useAI = () => {
                 } else {
                     // --- DRAWING ---
                     // Animate Draw
-                    const drawCount = (state.pendingDrawCount ?? 0) > 0 ? (state.pendingDrawCount ?? 0) : 1;
+                    const drawCount = 1;
                     await triggerAnimation('draw', {
                         count: drawCount,
                         targetSelector: aiSelector
